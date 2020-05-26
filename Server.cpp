@@ -19,7 +19,7 @@
 #define DEFAULT_PORT "27015"
 //----------------------------------------------------------------
 //ctr of the class
-Server::Server()
+Server::Server(char** data)
 {
 	ListenSocket = INVALID_SOCKET;
 	result = NULL;
@@ -32,11 +32,11 @@ Server::Server()
 	listenSocket();
 	SOCKET ClientSocket;
 	acceptClient(ClientSocket);
+	std::cout << "----------------------------------------" << std::endl;
+	std::cout << "------------Accept new client-----------" << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
 	closesocket(ListenSocket);
-	char* data = reciveData(ClientSocket);
-	std::cout << "after recive data" << std::endl;
-	std::cout << data << std::endl;
-	free(data);
+	*data = reciveData(ClientSocket);
 	closeClient(ClientSocket);
 }
 //---------------------------------------------------------
@@ -118,7 +118,7 @@ void Server::acceptClient(SOCKET& ClientSocket)
 		WSACleanup();
 		exit(1);
 	}
-	std::cout << ClientSocket << " is done" << std::endl;
+	std::cout << "Client fd number " << ClientSocket << " is done" << std::endl;
 }
 //-------------------------------------------------------------
 //recive the data from client
@@ -132,26 +132,21 @@ char * Server::reciveData(SOCKET& ClientSocket)
 		exit(1);
 
 	memset(recvdata, 0, sizeof(recvdata));
-	int i = 1;
 	// Receive until the peer shuts down the connection
 	do {
-
-		std::cout << "loop num " << i << std::endl;
 		memset(recvbuf, 0, sizeof(recvbuf));
 
 		iResult = recv(ClientSocket, recvbuf, 10, 0);
-		std::cout << "iResult " << iResult << std::endl;
 
 		if (iResult > 0) {
-			std::cout << "Bytes received: " << iResult << std::endl;
-			recvbuf[10] = '\0'; //delete the \r\n
-			std::cout << recvbuf << std::endl;
-			i++;
+			recvbuf[10] = '\0'; //delete the gibrish chars
 			strcat(recvdata, recvbuf); 
 		}
 		else if (iResult == 0)
 		{
-			std::cout << "Connection closing" << std::endl;
+			std::cout << "-----------------------------------------------" << std::endl;
+			std::cout << "------------Client connection closing----------" << std::endl;
+			std::cout << "-----------------------------------------------" << std::endl;
 			//free(recvbuf);
 			return recvdata;
 		}
@@ -165,7 +160,6 @@ char * Server::reciveData(SOCKET& ClientSocket)
 
 	} while (iResult > 0);
 	
-	std::cout << "buy!!" << std::endl;
 	//free(recvbuf);
 	return recvdata;
 }
@@ -181,6 +175,8 @@ void Server::closeClient(SOCKET & ClientSocket)
 //----------------------------------------------------------------
 Server::~Server()
 {
-	std::cout << "server socket is closeing..." << std::endl;
+	std::cout << "---------------------------------------------" << std::endl;
+	std::cout << "------------Server socket closeing-----------" << std::endl;
+	std::cout << "---------------------------------------------" << std::endl;
 }
 //-----------------------------------------------------------------

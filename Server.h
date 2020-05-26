@@ -7,7 +7,7 @@
 class Server
 {
 public:
-	Server();
+	Server(char** data);
 	void init(WSADATA &wsaData);
 	void initServer();
 	void connectToSocket();
