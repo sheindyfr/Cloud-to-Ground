@@ -7,13 +7,13 @@
 class Server
 {
 public:
-	Server(char** data);
+	Server();
 	void init(WSADATA &wsaData);
 	void initServer();
 	void connectToSocket();
 	void bindSocket();
 	void listenSocket();
-	void acceptClient(SOCKET& ClientSocket);
+	int acceptClient(SOCKET& ClientSocket);
 	char* reciveData(SOCKET& ClientSocket);
 	void closeClient(SOCKET & ClientSocket);
 	~Server();

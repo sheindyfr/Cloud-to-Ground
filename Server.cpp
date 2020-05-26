@@ -19,7 +19,7 @@
 #define DEFAULT_PORT "27015"
 //----------------------------------------------------------------
 //ctr of the class
-Server::Server(char** data)
+Server::Server()
 {
 	ListenSocket = INVALID_SOCKET;
 	result = NULL;
@@ -30,14 +30,6 @@ Server::Server(char** data)
 	bindSocket();
 	freeaddrinfo(result);
 	listenSocket();
-	SOCKET ClientSocket;
-	acceptClient(ClientSocket);
-	std::cout << "----------------------------------------" << std::endl;
-	std::cout << "------------Accept new client-----------" << std::endl;
-	std::cout << "----------------------------------------" << std::endl;
-	closesocket(ListenSocket);
-	*data = reciveData(ClientSocket);
-	closeClient(ClientSocket);
 }
 //---------------------------------------------------------
 //init the Winsock - for socket on windows
@@ -108,17 +100,15 @@ void Server::listenSocket()
 }
 //------------------------------------------------------------
 //accept new client
-void Server::acceptClient(SOCKET& ClientSocket)
+int Server::acceptClient(SOCKET& ClientSocket)
 {
 	// Accept a client socket
 	ClientSocket = accept(ListenSocket, NULL, NULL);
 	if (ClientSocket == INVALID_SOCKET) {
-		std::cout << "accept failed with error: " << WSAGetLastError() << std::endl;
-		closesocket(ListenSocket);
-		WSACleanup();
-		exit(1);
+		return 1;
 	}
 	std::cout << "Client fd number " << ClientSocket << " is done" << std::endl;
+	return 0;
 }
 //-------------------------------------------------------------
 //recive the data from client
@@ -171,7 +161,6 @@ void Server::closeClient(SOCKET & ClientSocket)
 	closesocket(ClientSocket);
 	WSACleanup();
 }
-
 //----------------------------------------------------------------
 Server::~Server()
 {

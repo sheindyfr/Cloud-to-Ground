@@ -8,6 +8,13 @@ int main()
 	std::cout << "----------------------------------------" << std::endl;
 	
 	char * data = NULL;
-	Server::Server(&data);
+	Server serv;
+	SOCKET ClientSocket = INVALID_SOCKET;
+
+
+	serv.acceptClient(ClientSocket);
+	data = serv.reciveData(ClientSocket);
 	std::cout << "the data:\n" << data << std::endl;
+	serv.closeClient(ClientSocket);
+
 }
