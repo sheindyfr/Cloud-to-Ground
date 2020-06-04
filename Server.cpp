@@ -114,22 +114,24 @@ int Server::acceptClient(SOCKET& ClientSocket)
 //recive the data from client
 char * Server::reciveData(SOCKET& ClientSocket)
 {
-	char *recvbuf = (char*)malloc(10*sizeof(char));
+	char *recvbuf = (char*)malloc(32*sizeof(char));
 	if (recvbuf == NULL)
 		exit(1);
 	char *recvdata = (char*)malloc(DEFAULT_BUFLEN);
 	if (recvdata == NULL)
 		exit(1);
-
+	
+	if(ClientSocket == INVALID_SOCKET)
+		std::cout << "invalid" << std::endl;
 	memset(recvdata, 0, sizeof(recvdata));
 	// Receive until the peer shuts down the connection
 	do {
 		memset(recvbuf, 0, sizeof(recvbuf));
 
-		iResult = recv(ClientSocket, recvbuf, 10, 0);
+		iResult = recv(ClientSocket, recvbuf, 32, 0);
 
 		if (iResult > 0) {
-			recvbuf[10] = '\0'; //delete the gibrish chars
+			recvbuf[iResult] = '\0'; //delete the gibrish chars
 			strcat(recvdata, recvbuf); 
 		}
 		else if (iResult == 0)
