@@ -160,11 +160,11 @@ void fillData(vector<float> &data)
 void fillData(vector<float> &data, int type)
 {
 	int indexI, indexJ, i;
-	indexI = (rand() % 100);
-	indexJ = (rand() % 100);
 	float r;
 	for (i = 0; i < NUM_OF_VALUES; ++i)
 	{
+		indexI = (rand() % 100);
+		indexJ = (rand() % 100);
 		r = 100.0 * ((((float)rand()) / (float)RAND_MAX)) + 40.0;
 		short temp = (short)(indexI << 8 | indexJ);
 		data[i] = (i % 2 == 0) ? (float)temp : r;
