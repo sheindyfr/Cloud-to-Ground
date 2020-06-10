@@ -2,9 +2,11 @@
 #include <vector>
 #include <string>
 #include "Server.h"
+#include "Matrix.h"
+#include "Frame.h"
 
 void fromCharArrToVector(std::vector<float> &v, char* buff);
-void print(std::vector <float> const &a);
+void printVector(std::vector <float> const &a);
 
 int main()
 {
@@ -15,6 +17,7 @@ int main()
 
 	Server serv;
 	SOCKET ClientSocket = INVALID_SOCKET;
+	Matrix mat;
 
 	while (1) 
 	{
@@ -25,22 +28,28 @@ int main()
 		
 		char * tmpData = NULL;
 		tmpData = serv.reciveData(ClientSocket);
-		std::cout << tmpData << std::endl;
 		
 		std::vector<float> data;
+		// convert the char* to a float vector
 		fromCharArrToVector(data, tmpData);
-		print(data);
+
 		//---------------------------------------------------------------------
-		// Start progress the data
+		// Start load the data
 		//---------------------------------------------------------------------
 
-
+		Frame frame(data);
+		if (frame.getType() == fullFrame)
+		{
+			frame.createMatrix(mat);
+		}
+		else frame.figureAndCreateMatrix(mat);
+		mat.printMatrix();
 
 		/* TODO: 
 		   1. figure out the type of frame.
 		   2. create frame object with the data vector (without the last place) and type.
-		   3. Matrix mat = halfFrame.figureAndCreateMatrix() --> read the last matrix from the file and return the new with the updates.
-		   4. Matrix mat = fullFrame.createMatrix() --> create new matrix by the full frame.
+		   3. mat = halfFrame.figureAndCreateMatrix(mat) --> read the last matrix from the file and return the new with the updates.
+		   4. mat = fullFrame.createMatrix() --> create new matrix by the full frame.
 		   5. DB.updateMatrix(mat) --> delete the old mat from the file and write the new.
 		*/
 
@@ -52,7 +61,8 @@ int main()
 }
 
 //-------------------------------------------------------------------------
-// convert the data to a float vector
+// convert the data that recived, from char array to a float vector
+//-------------------------------------------------------------------------
 void fromCharArrToVector(std::vector<float> &v, char* buff)
 {
 	int i, j = 0;
@@ -84,9 +94,10 @@ void fromCharArrToVector(std::vector<float> &v, char* buff)
 		i--;
 	}
 }
-//-------------------------------------------------------------------------
+//---------------
 // print vector
-void print(std::vector <float> const &a) 
+//---------------
+void printVector(std::vector <float> const &a) 
 {
 	std::cout << "The vector elements are : \n";
 
