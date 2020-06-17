@@ -16,16 +16,16 @@ DataBase::DataBase(string name)
 int DataBase::updateMatrix(Matrix& mat)
 {
 	fstream f;
-	f.open(fileName,std::ios::out | std::ios::app);
-	for (int i = 0; i < mat.rows; i++) {
-		for (int j = 0; j < mat.columns; j++) {
+		f.open(fileName,   fstream::out);
+		for (int i = 0; i < mat.rows; i++) {
+			for (int j = 0; j < mat.columns; j++) {
 
-			f << mat.getDataByIndex(i,j)<<",";
+				f << mat.getDataByIndex(i, j) << ",";
 
+			}
+			f << "\n";
 		}
-		f << "\n";  
-	}
-	f.close();
+		f.close();
 	return 1;
 }
 //----------------------------------------
