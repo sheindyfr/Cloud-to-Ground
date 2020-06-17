@@ -4,6 +4,7 @@
 #include "Server.h"
 #include "Matrix.h"
 #include "Frame.h"
+#include "DataBase.h"
 
 void fromCharArrToVector(std::vector<float> &v, char* buff);
 void printVector(std::vector <float> const &a);
@@ -18,6 +19,8 @@ int main()
 	Server serv;
 	SOCKET ClientSocket = INVALID_SOCKET;
 	Matrix mat;
+	DataBase DB("out.csv");
+
 
 	while (1) 
 	{
@@ -45,14 +48,7 @@ int main()
 		else frame.figureAndCreateMatrix(mat);
 		mat.printMatrix();
 
-		/* TODO: 
-		   1. figure out the type of frame.
-		   2. create frame object with the data vector (without the last place) and type.
-		   3. mat = halfFrame.figureAndCreateMatrix(mat) --> read the last matrix from the file and return the new with the updates.
-		   4. mat = fullFrame.createMatrix() --> create new matrix by the full frame.
-		   5. DB.updateMatrix(mat) --> delete the old mat from the file and write the new.
-		*/
-
+		DB.updateMatrix(mat);
 
 	}
 	//serv.closeClient(ClientSocket);
