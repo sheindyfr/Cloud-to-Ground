@@ -11,7 +11,7 @@
 #include <vector>
 #include<string>
 
-#define NUM_OF_VALUES 20
+#define NUM_OF_VALUES 25
 #define FLOAT_LENGTH_TO_CHAR 20
 #define DEFAULT_PORT "27015"
 #define DEFAULT_BUFLEN 512
@@ -41,7 +41,7 @@ int main()
 	srand((unsigned int)time(NULL));
 	vector<float> data(NUM_OF_VALUES + 1, 0);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 2; i++) {
 		
 		start(ConnectSocket);
 		Sleep(5000);
