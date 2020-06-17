@@ -1,3 +1,4 @@
+
 #include "Matrix.h"
 
 //---------------------
@@ -12,7 +13,7 @@ Matrix::Matrix()
 //-------------------------------------------
 // the function set the Matrix by new vector
 //-------------------------------------------
-void Matrix::setData(std::vector<float> &vData)
+void Matrix::setData(std::vector<float>& vData)
 {
 	int i, j, k = 0;
 	for (i = 0; i < rows; ++i)
@@ -49,12 +50,13 @@ void Matrix::printMatrix()
 	}
 }
 //--------------------------------
-// the function return the Matrix
-//--------------------------------
-float** Matrix::getData()
+// the function return the data by the indexes
+//----------------------------
+float Matrix::getDataByIndex(int i, int j)
 {
-	return (float**)data;
+	return data[i][j];
 }
+
 //-----------------------------------------
 Matrix::~Matrix()
 {
