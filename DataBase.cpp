@@ -16,7 +16,7 @@ DataBase::DataBase(string name)
 int DataBase::updateMatrix(Matrix& mat)
 {
 	fstream f;
-	f.open(fileName);
+	f.open(fileName,std::ios::out | std::ios::app);
 	for (int i = 0; i < mat.rows; i++) {
 		for (int j = 0; j < mat.columns; j++) {
 
