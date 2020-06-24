@@ -15,19 +15,18 @@ int main()
 	std::cout << "------------Server is running-----------" << std::endl;
 	std::cout << "----------------------------------------" << std::endl;
 	
-
 	Server serv;
 	SOCKET ClientSocket = INVALID_SOCKET;
 	Matrix mat;
 	DataBase DB("out.csv");
 
+	serv.acceptClient(ClientSocket);
 
 	while (1) 
 	{
 		//---------------------------------------------------------------------
 		// Recive the data from the client
 		//---------------------------------------------------------------------
-		serv.acceptClient(ClientSocket);
 		
 		char * tmpData = NULL;
 		tmpData = serv.reciveData(ClientSocket);
@@ -35,6 +34,8 @@ int main()
 		std::vector<float> data;
 		// convert the char* to a float vector
 		fromCharArrToVector(data, tmpData);
+
+		free(tmpData);
 
 		//---------------------------------------------------------------------
 		// Start load the data
@@ -48,7 +49,13 @@ int main()
 		else frame.figureAndCreateMatrix(mat);
 		mat.printMatrix();
 
+		//---------------------------------------------------------------------
+		// Update the DataBase
+		//---------------------------------------------------------------------
+
 		DB.updateMatrix(mat);
+
+		std::cout << "*********************************************************" << "\n";
 
 	}
 	//serv.closeClient(ClientSocket);
@@ -79,11 +86,7 @@ void fromCharArrToVector(std::vector<float> &v, char* buff)
 			tmp2 += buff[i];
 			i++;
 		}
-		if (buff[i] == '.')  // situation of '0' in the end of the vector
-		{
-			v.push_back(0.0);
-			break;
-		}
+		
 		float b = float(std::stoi(tmp2) / 10000.0);  // convert the 4 digits to a float number between 0 to 1
 		val += b;
 		v.push_back(val); // add the number to the vector
