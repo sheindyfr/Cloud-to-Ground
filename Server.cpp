@@ -15,8 +15,8 @@
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
-#define DEFAULT_BUFLEN 1024
-#define DEFAULT_PORT "27015"
+#define DEFAULT_BUFLEN 1000000000
+#define DEFAULT_PORT "65521"
 //----------------------------------------------------------------
 //ctr of the class
 Server::Server()
@@ -117,12 +117,14 @@ char * Server::reciveData(SOCKET& ClientSocket)
 	char *recvbuf = (char*)malloc(32*sizeof(char));
 	if (recvbuf == NULL)
 		exit(1);
+
 	char *recvdata = (char*)malloc(DEFAULT_BUFLEN);
 	if (recvdata == NULL)
 		exit(1);
 	
 	if(ClientSocket == INVALID_SOCKET)
 		std::cout << "invalid" << std::endl;
+
 	memset(recvdata, 0, sizeof(recvdata));
 	// Receive until the peer shuts down the connection
 	do {
@@ -132,6 +134,12 @@ char * Server::reciveData(SOCKET& ClientSocket)
 
 		if (iResult > 0) {
 			recvbuf[iResult] = '\0'; //delete the gibrish chars
+			if (recvbuf[iResult - 1] == '*') //if the client finished the sending
+			{
+				recvbuf[iResult - 1] = '\0';
+				strcat(recvdata, recvbuf);
+				return recvdata;
+			}
 			strcat(recvdata, recvbuf); 
 		}
 		else if (iResult == 0)
