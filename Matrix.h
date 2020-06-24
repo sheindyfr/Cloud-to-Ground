@@ -1,8 +1,8 @@
 #pragma once
 #include<iostream>
 #include<vector>
-#define N 5
-#define M 5
+#define N 1000
+#define M 10
 //--------------------------
 class Matrix
 {
