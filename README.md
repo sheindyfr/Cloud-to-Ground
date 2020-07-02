@@ -9,7 +9,7 @@ that processes the data of IoT sensors of a filed.
 
 **Goal**: The main project simulates a smart filed. 
 The sensors transmit a lot of data to a client side (the 'GETWAY'),
-the client needs to decide if some operation (like: water the files etc.)
+the client needs to decide if some operation (like: water the filed etc.)
 is needed. The client use a *Data compression* Algorithm and send it to a server side.
 The server gets the data from the client, figure out the data and restore it in a DataBase.
 
